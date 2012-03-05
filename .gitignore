@@ -12,3 +12,4 @@ dependencies/*
 *.ipr
 *.iws
 .idea/
+out/
