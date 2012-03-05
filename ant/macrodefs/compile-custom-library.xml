@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2011 Simon Bailey <simon@newtriks.com>
+  ~
+  ~ Permission is hereby granted to use, modify, and distribute this file
+  ~ in accordance with the terms of the license agreement located at the
+  ~ following url: http://www.newtriks.com/LICENSE.html
+  -->
+
+<!-- ======================================================================
+     ANT Macrodef Build Script
+
+     - Compiles a custom third party library swc
+
+     Author: Newtriks <simon@newtriks.com>
+     Date :21st February 2011
+     
+	====================================================================== -->
+<project>
+
+    <!-- = = = = = = = = = = = = = = = = =
+          macrodef: comp.compile
+          = = = = = = = = = = = = = = = = = -->
+    <macrodef name="comp.compile">
+
+        <attribute name="out"/>
+        <attribute name="link-report"/>
+        <attribute name="locale" default="en_US"/>
+        <attribute name="config" default="${flex.config.xml}"/>
+
+        <sequential>
+
+            <!-- Clean the output folder -->
+            <delete dir="@{out}" includes="*"/>
+
+            <!-- Compile the Third Party Library SWC -->
+            <compc output="@{out}"
+                   link-report="@{link-report}"
+                   locale="@{locale}"
+                   target-player="${swf.version.full}">
+
+                <!-- Get default flex compiler options. -->
+                <load-config filename="@{config}"/>
+
+                <!-- Libs src directory -->
+                <compiler.source-path path-element="${lib.src}"/>
+
+                <!-- Externally linked Flex libraries -->
+                <compiler.external-library-path dir="${FLEX.SDK.FRAMEWORKS}" append="true">
+                    <include name="libs/player/playerglobal.swc"/>
+                </compiler.external-library-path>
+
+                <include-sources dir="${lib.epologee}">
+                    <include name="**/*.as"/>
+                </include-sources>
+
+                <!-- Third Party RSL linked libraries -->
+                <compiler.external-library-path dir="${lib.swcs}" append="true">
+                    <include name="as3-signals-v0.9-BETA.swc"/>
+                    <include name="robotlegs-framework-v1.5.2.swc"/>
+                    <include name="signals-extension-SignalsCommandMap-v0.4.swc"/>
+                    <include name="SWFAddress.swc"/>
+                </compiler.external-library-path>
+
+            </compc>
+
+            <!-- Extract the SWF from the SWC for RSL purposes -->
+            <unzip src="@{out}" dest="${lib.bin}">
+                <patternset>
+                    <include name="library.swf"/>
+                </patternset>
+            </unzip>
+
+            <!-- Cleanup unwanted assets -->
+            <delete file="${lib.bin}/library.swf" failonerror="false"/>
+            <delete file="@{link-report}" failonerror="false"/>
+
+            <echo>Successfully compiled Third Party Library SWC to @{out}</echo>
+
+        </sequential>
+
+    </macrodef>
+
+</project>

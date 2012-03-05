@@ -1,48 +1,48 @@
 package suites.navigator.validation.elements {
-	import com.epologee.time.TimeDelay;
-	import com.epologee.navigator.behaviors.IHasStateInitialization;
-	import com.epologee.navigator.behaviors.IHasStateTransition;
+import com.epologee.navigator.behaviors.IHasStateInitialization;
+import com.epologee.navigator.behaviors.IHasStateTransition;
+import com.epologee.time.TimeDelay;
 
-	import org.osflash.signals.Signal;
+import org.osflash.signals.Signal;
 
-	/**
-	 * @author Eric-Paul Lecluse (c) epologee.com
-	 */
-	public class ResponderAsyncIT implements IHasStateInitialization, IHasStateTransition, ISignalResponder {
-		public var visible : Boolean;
-		//
-		public var initialized : Signal = new Signal();
-		public var transitionedIn : Signal = new Signal();
-		public var transitionedOut : Signal = new Signal();
-		
-		public function get durationMS() : Number {
-			return 500;
-		}
+/**
+ * @author Eric-Paul Lecluse (c) epologee.com
+ */
+public class ResponderAsyncIT implements IHasStateInitialization, IHasStateTransition, ISignalResponder {
+    public var visible:Boolean;
+    //
+    public var initialized:Signal = new Signal();
+    public var transitionedIn:Signal = new Signal();
+    public var transitionedOut:Signal = new Signal();
 
-		public function removeAllSignalListeners() : void {
-			initialized.removeAll();
-			transitionedIn.removeAll();
-			transitionedOut.removeAll();
-		}
+    public function get durationMS():Number {
+        return 500;
+    }
 
-		public function initialize() : void {
-			visible = false;
-			initialized.dispatch();
-		}
+    public function removeAllSignalListeners():void {
+        initialized.removeAll();
+        transitionedIn.removeAll();
+        transitionedOut.removeAll();
+    }
 
-		public function transitionIn(inCallOnComplete : Function) : void {
-			visible = true;
-			new TimeDelay(finishTransition, durationMS, [inCallOnComplete, transitionedIn]);
-		}
+    public function initialize():void {
+        visible = false;
+        initialized.dispatch();
+    }
 
-		private function finishTransition(inCallOnComplete : Function, inSignalToDispatch:Signal) : void {
-			inCallOnComplete();
-			inSignalToDispatch.dispatch();
-		}
+    public function transitionIn(inCallOnComplete:Function):void {
+        visible = true;
+        new TimeDelay(finishTransition, durationMS, [inCallOnComplete, transitionedIn]);
+    }
 
-		public function transitionOut(inCallOnComplete : Function) : void {
-			visible = false;
-			new TimeDelay(finishTransition, durationMS, [inCallOnComplete, transitionedOut]);
-		}
-	}
+    private function finishTransition(inCallOnComplete:Function, inSignalToDispatch:Signal):void {
+        inCallOnComplete();
+        inSignalToDispatch.dispatch();
+    }
+
+    public function transitionOut(inCallOnComplete:Function):void {
+        visible = false;
+        new TimeDelay(finishTransition, durationMS, [inCallOnComplete, transitionedOut]);
+    }
+}
 }
