@@ -11,14 +11,14 @@ import com.epologee.navigator.integration.robotlegs.mapping.StateViewMap;
 
 import flash.display.DisplayObjectContainer;
 
-import org.robotlegs.mvcs.SignalContext;
+import org.robotlegs.utilities.modular.mvcs.ModuleContext;
 
 /**
  * @author Eric-Paul Lecluse (c) epologee.com
  *
- * Use RobotLegs, Signals AND the Navigator. Best of all worlds :)
+ * Use Modular RobotLegs, Signals AND the Navigator. Best of all worlds :)
  */
-public class NavigatorSignalContext extends SignalContext implements INavigatorContext {
+public class NavigatorSignalContext extends ModuleContext implements INavigatorContext {
     private var _stateMediatorMap:IStateViewMap;
     private var _stateCommandMap:IStateControllerMap;
     private var _stateActorMap:IStateActorMap;

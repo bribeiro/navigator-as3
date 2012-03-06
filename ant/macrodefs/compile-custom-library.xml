@@ -60,6 +60,7 @@
                     <include name="robotlegs-framework-v1.5.2.swc"/>
                     <include name="signals-extension-SignalsCommandMap-v0.4.swc"/>
                     <include name="SWFAddress.swc"/>
+                    <include name="robotlegs-utilities-Modular-v0.5.3.swc"/>
                 </compiler.external-library-path>
 
             </compc>
