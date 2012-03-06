@@ -11,6 +11,7 @@ import com.epologee.navigator.integration.robotlegs.mapping.StateViewMap;
 
 import flash.display.DisplayObjectContainer;
 
+import org.robotlegs.core.IInjector;
 import org.robotlegs.utilities.modular.mvcs.ModuleContext;
 
 /**
@@ -23,10 +24,12 @@ public class NavigatorSignalContext extends ModuleContext implements INavigatorC
     private var _stateCommandMap:IStateControllerMap;
     private var _stateActorMap:IStateActorMap;
 
-    public function NavigatorSignalContext(contextView:DisplayObjectContainer, autoStartup:Boolean = true, CustomNavigator:Class = null) {
-        if (!injector.hasMapping(INavigator)) {
+    public function NavigatorSignalContext(contextView:DisplayObjectContainer, autoStartup:Boolean = true, CustomNavigator:Class = null, parentInjector:IInjector = null) {
+        super(contextView, false, parentInjector);
+        // If parent injector already has a navigator mapped then use that mapping.
+        var parentHasANavigator:Boolean = (parentInjector && parentInjector.hasMapping(INavigator));
+        if (!parentHasANavigator && !injector.hasMapping(INavigator)) {
             injector.mapSingletonOf(INavigator, CustomNavigator || Navigator);
-
             // Redundancy check, in case people want to Inject to Navigator
             // or their own custom class (e.g. SWFAddressNavigator)
             injector.mapValue(Navigator, injector.getInstance(INavigator));
@@ -34,8 +37,7 @@ public class NavigatorSignalContext extends ModuleContext implements INavigatorC
                 injector.mapValue(CustomNavigator, injector.getInstance(INavigator));
             }
         }
-
-        super(contextView, autoStartup);
+        if (contextView && autoStartup) startup();
     }
 
     /**
