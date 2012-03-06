@@ -5,7 +5,6 @@
 
 # binary and library folders
 bin/*
-dependencies/*
 
 #IntelliJ IDEA
 *.iml
