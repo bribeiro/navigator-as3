@@ -97,7 +97,8 @@ public class StateControllerMap implements IStateControllerMap, IHasStateValidat
 
                     var command:Command = Command(_injector.instantiate(wrapper.CommandClass));
                     command.execute();
-
+                    _injector.unmap(NavigationState);
+                    _injector.unmap(NavigationState, "truncated");
                     if (wrapper.oneShot) {
                         unmapCommand(wrapper.state, wrapper.CommandClass);
                     }
